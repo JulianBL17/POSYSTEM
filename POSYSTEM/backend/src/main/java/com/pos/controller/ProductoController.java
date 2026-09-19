@@ -35,25 +35,25 @@ public class ProductoController {
 
     // CREAR PRODUCTO
     @PostMapping
+    @SuppressWarnings("null")
     public Producto crear(@RequestBody Producto producto) {
         return repo.save(producto);
     }
 
     // ACTUALIZAR PRODUCTO
     @PutMapping("/{id}")
+    @SuppressWarnings("null")
     public ResponseEntity<Producto> actualizar(
-            @PathVariable Integer id,
+            @PathVariable int id,
             @RequestBody Producto producto) {
 
         return repo.findById(id)
                 .map(productoExistente -> {
-
                     productoExistente.setNombre(producto.getNombre());
                     productoExistente.setPrecio(producto.getPrecio());
                     productoExistente.setStock(producto.getStock());
 
                     Producto actualizado = repo.save(productoExistente);
-
                     return ResponseEntity.ok(actualizado);
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -61,14 +61,12 @@ public class ProductoController {
 
     // ELIMINAR PRODUCTO
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
-
+    public ResponseEntity<Void> eliminar(@PathVariable int id) {
         if (!repo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
 
         repo.deleteById(id);
-
         return ResponseEntity.noContent().build();
     }
 }

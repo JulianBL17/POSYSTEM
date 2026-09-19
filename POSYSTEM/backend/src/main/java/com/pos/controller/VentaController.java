@@ -45,7 +45,9 @@ public class VentaController {
             return ResponseEntity.badRequest().build();
         }
 
-        return productoRepo.findById(venta.getProducto().getId())
+        int productoId = venta.getProducto().getId();
+
+        return productoRepo.findById(productoId)
                 .map(producto -> {
                     venta.setProducto(producto);
                     venta.setTotal(producto.getPrecio().multiply(BigDecimal.valueOf(venta.getCantidad())));
@@ -58,13 +60,14 @@ public class VentaController {
     // ACTUALIZAR VENTA
     @PutMapping("/{id}")
     public ResponseEntity<Venta> actualizar(
-            @PathVariable Integer id,
+            @PathVariable int id,
             @RequestBody Venta ventaDetalles) {
 
         return ventaRepo.findById(id)
                 .map(ventaExistente -> {
                     if (ventaDetalles.getProducto() != null && ventaDetalles.getProducto().getId() != null) {
-                        Producto producto = productoRepo.findById(ventaDetalles.getProducto().getId()).orElse(null);
+                        int productoId = ventaDetalles.getProducto().getId();
+                        Producto producto = productoRepo.findById(productoId).orElse(null);
                         if (producto != null) {
                             ventaExistente.setProducto(producto);
                             ventaExistente.setTotal(producto.getPrecio().multiply(BigDecimal.valueOf(ventaDetalles.getCantidad())));
@@ -80,7 +83,7 @@ public class VentaController {
 
     // ELIMINAR VENTA
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+    public ResponseEntity<Void> eliminar(@PathVariable int id) {
         if (!ventaRepo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
