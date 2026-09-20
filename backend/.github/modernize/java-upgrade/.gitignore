@@ -46,3 +46,9 @@ Thumbs.db
 .env
 application-local.properties
 application-local.yml
+
+target/
+*.class
+.settings/
+.classpath
+.project

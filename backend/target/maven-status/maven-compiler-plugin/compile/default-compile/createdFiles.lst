@@ -7,5 +7,6 @@ com\pos\model\Producto.class
 com\pos\PosApplication.class
 com\pos\repository\ProductoRepository.class
 com\pos\repository\VentaRepository.class
+com\pos\repository\LoginRepository.class
 com\pos\controller\ProductoController.class
 com\pos\model\Venta.class

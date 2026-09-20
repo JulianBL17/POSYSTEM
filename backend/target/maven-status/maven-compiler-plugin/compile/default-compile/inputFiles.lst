@@ -1,6 +1,7 @@
 C:\Users\JULIAN\OneDrive\Documentos\SistemaPos-main\SistemaPos-main\ProyectoPOS_Completo (2)\backend\src\main\java\com\pos\controller\VentaController.java
 C:\Users\JULIAN\OneDrive\Documentos\SistemaPos-main\SistemaPos-main\ProyectoPOS_Completo (2)\backend\src\main\java\com\pos\model\Producto.java
 C:\Users\JULIAN\OneDrive\Documentos\SistemaPos-main\SistemaPos-main\ProyectoPOS_Completo (2)\backend\src\main\java\com\pos\model\Login.java
+C:\Users\JULIAN\OneDrive\Documentos\SistemaPos-main\SistemaPos-main\ProyectoPOS_Completo (2)\backend\src\main\java\com\pos\repository\LoginRepository.java
 C:\Users\JULIAN\OneDrive\Documentos\SistemaPos-main\SistemaPos-main\ProyectoPOS_Completo (2)\backend\src\main\java\com\pos\PosApplication.java
 C:\Users\JULIAN\OneDrive\Documentos\SistemaPos-main\SistemaPos-main\ProyectoPOS_Completo (2)\backend\src\main\java\com\pos\repository\ProductoRepository.java
 C:\Users\JULIAN\OneDrive\Documentos\SistemaPos-main\SistemaPos-main\ProyectoPOS_Completo (2)\backend\src\main\java\com\pos\config\SecurityConfig.java
