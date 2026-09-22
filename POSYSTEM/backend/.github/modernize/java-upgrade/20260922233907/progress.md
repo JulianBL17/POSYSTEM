@@ -56,7 +56,7 @@
     - Result: SUCCESS; all tests passed
     - Notes: Java 25 compilation and test suite succeeded.
   - **Deferred Work**: None
-  - **Commit**: Pending
+  - **Commit**: `94e97274faa212773ac79fbdc8e8f85b32a48bd2` - Step 5: Final Java 25 validation
 
 - **Step 4: CVE Validation and Fix**
   - **Status**: ✅ Completed
@@ -74,7 +74,7 @@
     - Result: SUCCESS; no known CVEs remain
     - Notes: 42.6.0→42.7.11→42.7.12 based on successive scan findings.
   - **Deferred Work**: None
-  - **Commit**: Pending
+  - **Commit**: `94e97274faa212773ac79fbdc8e8f85b32a48bd2` - Step 5: Final Java 25 validation
 
 - **Step 5: Final Validation**
   - **Status**: ✅ Completed
@@ -91,10 +91,12 @@
     - Result: SUCCESS; 100% tests passed
     - Notes: Final CVE scan also clean.
   - **Deferred Work**: None
-  - **Commit**: Pending
+  - **Commit**: `94e97274faa212773ac79fbdc8e8f85b32a48bd2` - Step 5: Final Java 25 validation
 
 ---
 
 ## Notes
 
 - Existing user modifications are limited to hook scripts and must remain preserved.
+- Final commit: `94e97274faa212773ac79fbdc8e8f85b32a48bd2` on `appmod/java-upgrade-20260922233907`.
+- JDK 17 baseline was skipped because no JDK 17 installation was available.
