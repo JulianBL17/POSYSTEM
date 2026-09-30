@@ -49,6 +49,7 @@ public class ProductoController {
                 .map(productoExistente -> {
 
                     productoExistente.setNombre(producto.getNombre());
+                    productoExistente.setCategoria(producto.getCategoria());
                     productoExistente.setPrecio(producto.getPrecio());
                     productoExistente.setStock(producto.getStock());
 

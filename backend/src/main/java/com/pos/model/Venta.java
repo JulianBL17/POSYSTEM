@@ -28,6 +28,7 @@ public class Venta {
 
     private Integer cantidad;
     private BigDecimal total;
+    private String metodoPago;
     private LocalDateTime fecha = LocalDateTime.now();
 
     public Integer getId() { return id; }
@@ -44,6 +45,9 @@ public class Venta {
 
     public BigDecimal getTotal() { return total; }
     public void setTotal(BigDecimal total) { this.total = total; }
+
+    public String getMetodoPago() { return metodoPago; }
+    public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
 
     public LocalDateTime getFecha() { return fecha; }
     public void setFecha(LocalDateTime fecha) { this.fecha = fecha; }

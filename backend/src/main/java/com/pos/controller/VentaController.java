@@ -41,7 +41,9 @@ public class VentaController {
     // CREAR VENTA
     @PostMapping
     public ResponseEntity<Venta> crear(@RequestBody Venta venta) {
-        if (venta.getProducto() == null || venta.getProducto().getId() == null) {
+        if (venta.getProducto() == null || venta.getProducto().getId() == null
+                || venta.getCantidad() == null || venta.getCantidad() <= 0
+                || venta.getMetodoPago() == null || venta.getMetodoPago().isBlank()) {
             return ResponseEntity.badRequest().build();
         }
 

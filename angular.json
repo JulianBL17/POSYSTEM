@@ -1,0 +1,65 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "pos-frontend": {
+      "projectType": "application",
+      "root": "fronted/pos-frontend",
+      "sourceRoot": "fronted/pos-frontend/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": "dist/pos-frontend",
+            "index": "fronted/pos-frontend/src/index.html",
+            "browser": "fronted/pos-frontend/src/main.ts",
+            "server": "fronted/pos-frontend/src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "fronted/pos-frontend/src/server.ts"
+            },
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "fronted/pos-frontend/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "fronted/pos-frontend/src/styles.scss"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "pos-frontend:build:production"
+            },
+            "development": {
+              "buildTarget": "pos-frontend:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

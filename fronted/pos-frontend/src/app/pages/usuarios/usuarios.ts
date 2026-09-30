@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { Usuarios, Usuario } from '../../services/usuarios';
@@ -16,10 +17,12 @@ import { Usuarios, Usuario } from '../../services/usuarios';
 export class UsuariosComponent implements OnInit {
 
   usuarios: Usuario[] = [];
+  mensaje = '';
+  claseAviso: 'alert-success' | 'alert-danger' | 'alert-warning' = 'alert-success';
 
   usuario: Usuario = {
     nombre: '',
-    email: '',
+    correo: '',
     rol: '',
     password: ''
   };
@@ -40,16 +43,16 @@ export class UsuariosComponent implements OnInit {
       next: (data) => {
         this.usuarios = data;
       },
-      error: (error) => {
-        console.error('Error cargando usuarios:', error);
+      error: (error: HttpErrorResponse) => {
+        this.mostrarError(error, 'cargar los usuarios');
       }
     });
   }
 
   guardarUsuario(): void {
 
-    if (!this.usuario.nombre || !this.usuario.email) {
-      alert('Completa los datos del usuario.');
+    if (!this.usuario.nombre || !this.usuario.correo) {
+      this.mostrarAviso('Completa el nombre y el correo electrónico del usuario.', 'alert-warning');
       return;
     }
 
@@ -62,13 +65,12 @@ export class UsuariosComponent implements OnInit {
         )
         .subscribe({
           next: () => {
-            alert('Usuario actualizado correctamente.');
+            this.mostrarAviso('Usuario actualizado correctamente.', 'alert-success');
             this.limpiarFormulario();
             this.cargarUsuarios();
           },
-          error: (error) => {
-            console.error(error);
-            alert('Error actualizando usuario.');
+          error: (error: HttpErrorResponse) => {
+            this.mostrarError(error, 'actualizar el usuario');
           }
         });
 
@@ -78,13 +80,12 @@ export class UsuariosComponent implements OnInit {
         .crearUsuario(this.usuario)
         .subscribe({
           next: () => {
-            alert('Usuario creado correctamente.');
+            this.mostrarAviso('Usuario creado correctamente.', 'alert-success');
             this.limpiarFormulario();
             this.cargarUsuarios();
           },
-          error: (error) => {
-            console.error(error);
-            alert('Error creando usuario.');
+          error: (error: HttpErrorResponse) => {
+            this.mostrarError(error, 'crear el usuario');
           }
         });
     }
@@ -95,7 +96,7 @@ export class UsuariosComponent implements OnInit {
     this.usuario = {
       id: usuario.id,
       nombre: usuario.nombre,
-      email: usuario.email,
+      correo: usuario.correo,
       rol: usuario.rol,
       password: usuario.password
     };
@@ -108,18 +109,17 @@ export class UsuariosComponent implements OnInit {
 
     if (id === undefined) return;
 
-    if (!confirm('¿Desea eliminar este usuario?')) return;
+    if (!confirm('¿Deseas eliminar este usuario? Esta acción no se puede deshacer.')) return;
 
     this.usuariosService
       .eliminarUsuario(id)
       .subscribe({
         next: () => {
-          alert('Usuario eliminado correctamente.');
+          this.mostrarAviso('Usuario eliminado correctamente.', 'alert-success');
           this.cargarUsuarios();
         },
-        error: (error) => {
-          console.error(error);
-          alert('Error eliminando usuario.');
+        error: (error: HttpErrorResponse) => {
+          this.mostrarError(error, 'eliminar el usuario');
         }
       });
   }
@@ -128,12 +128,33 @@ export class UsuariosComponent implements OnInit {
 
     this.usuario = {
       nombre: '',
-      email: '',
+      correo: '',
       rol: '',
       password: ''
     };
 
     this.editando = false;
     this.usuarioEditandoId = undefined;
+  }
+
+  cerrarAviso(): void {
+    this.mensaje = '';
+  }
+
+  private mostrarAviso(mensaje: string, clase: typeof this.claseAviso): void {
+    this.mensaje = mensaje;
+    this.claseAviso = clase;
+  }
+
+  private mostrarError(error: HttpErrorResponse, accion: string): void {
+    const detalle = error.status === 0
+      ? 'No hay conexión con el servidor. Verifica que el backend esté activo.'
+      : error.status === 400
+        ? 'Revisa los datos e inténtalo de nuevo.'
+        : error.status === 404
+          ? 'No se encontró el usuario. Actualiza la lista e inténtalo de nuevo.'
+          : 'Inténtalo de nuevo. Si el problema continúa, contacta al administrador.';
+
+    this.mostrarAviso(`No se pudo ${accion}. ${detalle}`, 'alert-danger');
   }
 }

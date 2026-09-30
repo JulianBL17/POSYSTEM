@@ -4,9 +4,20 @@ import { Observable } from 'rxjs';
 
 export interface Venta {
   id?: number;
+  producto: {
+    id: number;
+    nombre: string;
+  };
+  cantidad: number;
   total: number;
   metodoPago: string;
   fecha?: string;
+}
+
+export interface NuevaVenta {
+  producto: { id: number };
+  cantidad: number;
+  metodoPago: string;
 }
 
 @Injectable({
@@ -22,7 +33,7 @@ export class Ventas {
     return this.http.get<Venta[]>(this.apiUrl);
   }
 
-  crearVenta(venta: Venta): Observable<Venta> {
+  crearVenta(venta: NuevaVenta): Observable<Venta> {
     return this.http.post<Venta>(
       this.apiUrl,
       venta

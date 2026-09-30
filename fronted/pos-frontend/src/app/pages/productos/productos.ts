@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -19,6 +20,8 @@ import {
 export class ProductosComponent implements OnInit {
 
   productos: Producto[] = [];
+  mensaje = '';
+  claseAviso: 'alert-success' | 'alert-danger' | 'alert-warning' = 'alert-success';
 
   producto: Producto = {
     nombre: '',
@@ -43,9 +46,8 @@ export class ProductosComponent implements OnInit {
       next: (data) => {
         this.productos = data;
       },
-      error: (error) => {
-        console.error('Error cargando productos:', error);
-        console.error('No se pudieron cargar los productos. Verifica que Spring Boot esté ejecutándose.');
+      error: (error: HttpErrorResponse) => {
+        this.mostrarError(error, 'cargar los productos');
       }
     });
   }
@@ -53,7 +55,7 @@ export class ProductosComponent implements OnInit {
   guardarProducto(): void {
 
     if (!this.producto.nombre || this.producto.precio <= 0) {
-      console.error('Completa correctamente los datos del producto.');
+      this.mostrarAviso('Escribe un nombre y un precio mayor que cero.', 'alert-warning');
       return;
     }
 
@@ -67,13 +69,12 @@ export class ProductosComponent implements OnInit {
         )
         .subscribe({
           next: () => {
-            alert('Producto actualizado correctamente.');
+            this.mostrarAviso('Producto actualizado correctamente.', 'alert-success');
             this.limpiarFormulario();
             this.cargarProductos();
           },
-          error: (error) => {
-            console.error('Error actualizando producto:', error);
-            console.error('Error actualizando el producto.');
+          error: (error: HttpErrorResponse) => {
+            this.mostrarError(error, 'actualizar el producto');
           }
         });
 
@@ -84,13 +85,12 @@ export class ProductosComponent implements OnInit {
         .crearProducto(this.producto)
         .subscribe({
           next: () => {
-            console.error('Producto creado correctamente.');
+            this.mostrarAviso('Producto creado y agregado al inventario.', 'alert-success');
             this.limpiarFormulario();
             this.cargarProductos();
           },
-          error: (error) => {
-            console.error('Error creando producto:', error);
-            console.error('Error creando el producto.');
+          error: (error: HttpErrorResponse) => {
+            this.mostrarError(error, 'crear el producto');
           }
         });
     }
@@ -124,12 +124,11 @@ export class ProductosComponent implements OnInit {
       .eliminarProducto(id)
       .subscribe({
         next: () => {
-          alert('Producto eliminado correctamente.');
+          this.mostrarAviso('Producto eliminado del inventario.', 'alert-success');
           this.cargarProductos();
         },
-        error: (error) => {
-          console.error('Error eliminando producto:', error);
-          alert('Error eliminando el producto.');
+        error: (error: HttpErrorResponse) => {
+          this.mostrarError(error, 'eliminar el producto');
         }
       });
   }
@@ -145,5 +144,26 @@ export class ProductosComponent implements OnInit {
 
     this.editando = false;
     this.productoEditandoId = undefined;
+  }
+
+  cerrarAviso(): void {
+    this.mensaje = '';
+  }
+
+  private mostrarAviso(mensaje: string, clase: typeof this.claseAviso): void {
+    this.mensaje = mensaje;
+    this.claseAviso = clase;
+  }
+
+  private mostrarError(error: HttpErrorResponse, accion: string): void {
+    const detalle = error.status === 0
+      ? 'No hay conexión con el servidor. Verifica que el backend esté activo.'
+      : error.status === 400
+        ? 'Revisa los datos e inténtalo de nuevo.'
+        : error.status === 404
+          ? 'No se encontró el registro. Actualiza la lista e inténtalo de nuevo.'
+          : 'Inténtalo de nuevo. Si el problema continúa, contacta al administrador.';
+
+    this.mostrarAviso(`No se pudo ${accion}. ${detalle}`, 'alert-danger');
   }
 }
